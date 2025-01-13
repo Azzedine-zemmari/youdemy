@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "./User.php";
 
 class Enseignant extends User{
@@ -15,8 +16,9 @@ class Enseignant extends User{
         if($stmt->execute([$email])){
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if($user && password_verify($password,$user['password'])){
-                $this->id = $user['id'];
+                $_SESSION['userId'] = $user['id'];
                 $this->nom = $user['name'];
+                $_SESSION['role'] = $user['role'];
                 echo "welcome Enseignant {$this->nom}";
             }
             else{

@@ -29,4 +29,9 @@ abstract class User{
     }
 
     abstract public function login($email,$password);
+    public function logout(){
+        session_unset();
+        session_destroy();
+        echo "you have been logged out";
+    }
 }

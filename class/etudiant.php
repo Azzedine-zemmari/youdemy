@@ -1,4 +1,5 @@
 <?php 
+session_start();
 require "./User.php";
 class Etudiant extends User{
     public function __construct($nom,$email,$password)
@@ -13,8 +14,9 @@ class Etudiant extends User{
         if($stmt->execute([$email])){
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if($user && password_verify($password,$user['password'])){
-                $this->id = $user['id'];
+                $_SESSION['userId'] = $user['id'];
                 $this->nom = $user['name'];
+                $_SESSION['role'] = $user['role'];
                 echo "welcome Etudiant {$this->nom}";
                 return true;
             }
@@ -28,3 +30,4 @@ class Etudiant extends User{
 // $test = new Etudiant("amine","amine@gmail.com","amine4000");
 // $test->register();
 // $test->login("ilyas@gmail.com","ilyass2000");
+// $test->logout();
