@@ -1,5 +1,5 @@
 <?php
-require "./Database.php";
+require __DIR__. "/./Database.php";
 abstract class User{
     protected $id;
     protected $nom;

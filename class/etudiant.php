@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require "./User.php";
+require __DIR__. "/./User.php";
 class Etudiant extends User{
     public function __construct($nom,$email,$password)
     {
