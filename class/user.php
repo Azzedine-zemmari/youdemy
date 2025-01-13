@@ -1,6 +1,6 @@
 <?php
-require "./database.php";
-abstract class user{
+require "./Database.php";
+abstract class User{
     protected $id;
     protected $nom;
     protected $email;
@@ -16,7 +16,7 @@ abstract class user{
     }
 
     public function register(){
-        $db = database::getInstance()->getConnection();
+        $db = Database::getInstance()->getConnection();
         $sql = 'insert into user(name,email,password,role) values(?,?,?,?)';
         $stmt = $db->prepare($sql);
         if($stmt->execute([$this->nom,$this->email,$this->password,$this->role])){
