@@ -26,9 +26,29 @@ class tag{
             echo "failed to insert multiples tags".$e->getMessage();
         }
     }
-    public function
+    public function attachTagToCours($coursId){
+        $db = Database::getInstance()->getConnection();
+        try{
+            $db->beginTransaction();
+            foreach($this->tags as $tagId){
+                $sql = "insert into cours_tags(cours_id,tag_id) values(?,?)";
+                $stmt = $db->prepare($sql);
+                $stmt->execute([$coursId,$tagId]);
+            }
+            $db->commit();
+            echo "insterted successfully";
+        }
+        catch(PDOException $e){
+            $db->rollBack();
+            echo "failed to attach this tags to cours ".$e->getMessage(); 
+        }
+        // echo "inseerted successfully";
+    }
 }
 
-// $arragyTags = ['HTML5','Basics','Web','dev'];
+// $arragyTags = [1,2,3];
+// $obj = new tag($arragyTags);
+// $obj->attachTagToCours(1);
 // $obj = new tag($arragyTags);
 // $obj->createTags();
+
