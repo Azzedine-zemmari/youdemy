@@ -47,7 +47,7 @@ class course implements coursInterface{
             return [];
         }
     }
-    public static function recherche($keyword){
+    public static function search($keyword){
         $db = Database::getInstance()->getConnection();
         $sql = "select cours.* , categories.nom as CategoryName from cours join categories on categories.idCategory = cours.categorie_id where categories.nom like ? or cours.titre like ?";
         $stmt = $db->prepare($sql);
