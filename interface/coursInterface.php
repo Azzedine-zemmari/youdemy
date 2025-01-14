@@ -1,6 +1,6 @@
 <?php 
 
 interface coursInterface{
-    public function createCourse();
+    public function createCourse($tagsArray);
     public static function showCourse();
 }
