@@ -47,6 +47,17 @@ class course implements coursInterface{
             return [];
         }
     }
+    public static function recherche($keyword){
+        $db = Database::getInstance()->getConnection();
+        $sql = "select cours.* , categories.nom as CategoryName from cours join categories on categories.idCategory = cours.categorie_id where categories.nom like ? or cours.titre like ?";
+        $stmt = $db->prepare($sql);
+        $keyword = "%".$keyword."%";
+        $stmt->execute([$keyword,$keyword]);
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        
+    }
 }
 
 // $test = new course("from zero to hero in HTML5","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum semper, libero sed mollis porta, purus mi sagittis leo, sed interdum nisl nisl in erat. Aliquam volutpat suscipit faucibus. Suspendisse potenti.","
@@ -62,4 +73,14 @@ class course implements coursInterface{
 //         echo "Category: ".$course['CategoryName']."<br/>";
 //         echo "Formateur: ".$course['EnseignantName']."<br/>";
 //     }
+// }
+
+// $test = course::recherche("css");
+// if(!empty($test)){
+//     foreach($test as $t){
+//         echo "Title: ".$t['titre'];
+//     }
+// }
+// else{
+//     echo "nothing found ";
 // }
