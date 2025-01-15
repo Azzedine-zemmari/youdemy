@@ -29,7 +29,7 @@ abstract class course
     abstract public function createCourse($tagsArray);
     // work on createCourse and showCourse
 
-    public static function showCourse()
+    public static function showCourses()
     {
         $db = Database::getInstance()->getConnection();
         $sql = "select cours.*,categories.nom as CategoryName,user.name as Enseignant , group_concat(tags.nom) as tags from cours 
@@ -56,5 +56,19 @@ abstract class course
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+    public static function showCourseById($id){
+        $db =  Database::getInstance()->getConnection();
+        $sql = "select cours.*,categories.nom as CategoryName,user.name as Enseignant , group_concat(tags.nom) as tags from cours 
+        join categories on categories.idCategory = cours.categorie_id 
+        join user on user.id = cours.enseignant_id 
+        join cours_tags on cours.idCours = cours_tags.cours_id
+        join tags on tags.idTag = cours_tags.tag_id
+        group by cours.idCours
+        having cours.idCours = ?
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

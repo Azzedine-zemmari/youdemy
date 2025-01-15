@@ -1,7 +1,7 @@
 <?php 
 session_start();
 require_once __DIR__."/../../class/Course.php";
-$courses = course::showCourse();
+$courses = course::showCourses();
 // print_r( $_SESSION['nom']);
 ?>
 <!DOCTYPE html>
@@ -69,7 +69,7 @@ $courses = course::showCourse();
                         <div class="flex justify-between items-center">
                             <span class="text-2xl font-bold text-green-600">$<?= $course['price'] ?></span>
                             <?php if(isset($_SESSION['userId']) && $_SESSION['role'] == 'Etudiant'): ?>
-                            <a href="/description.php?id=<?= $course['idCours'] ?>" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <a href="./description.php?id=<?= $course['idCours'] ?>" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                                 Read More
                             </a>
                             <?php endif;?>
