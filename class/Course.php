@@ -1,16 +1,18 @@
 <?php
-require __DIR__ . "/../interface/coursInterface.php";
-require __DIR__ . "/../class/Database.php";
-class course implements coursInterface
+// require __DIR__ . "/../interface/coursInterface.php";
+require_once __DIR__ . "/../class/Database.php";
+abstract class course
 {
-    private $id;
-    private $titre;
-    private $description;
-    private $content;
-    private $contentVedeo;
-    private $categorieId;
-    private $enseignantId;
-    public function __construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId)
+    protected $id;
+    protected $titre;
+    protected $description;
+    protected $content;
+    protected $contentVedeo;
+    protected $categorieId;
+    protected $enseignantId;
+    protected $type;
+
+    public function __construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId,$type=null)
     {
         $this->titre = $titre;
         $this->description = $description;
@@ -18,33 +20,11 @@ class course implements coursInterface
         $this->contentVedeo = $contentVedeo;
         $this->categorieId = $categorieId;
         $this->enseignantId = $enseignantId;
+        $this->type = $type;
     }
 
 
-    public function createCourse($tagsArray)
-    {
-        $db = Database::getInstance()->getConnection();
-
-        try {
-            $db->beginTransaction();
-            $sql = "insert into cours(titre,description,contenu,vedeo,categorie_id,enseignant_id) values(?,?,?,?,?,?)";
-            $stmt = $db->prepare($sql);
-            $stmt->execute([$this->titre, $this->description, $this->content, $this->contentVedeo, $this->categorieId, $this->enseignantId]);
-
-            $coursId = $db->lastInsertId();
-
-            foreach ($tagsArray as $tag) {
-                $sql2 = "insert into cours_tags(cours_id,tag_id) values(?,?)";
-                $stmt = $db->prepare($sql2);
-                $stmt->execute([$coursId, $tag]);
-            }
-            $db->commit();
-            echo "new course added";
-        } catch (Exception $e) {
-            $db->rollBack();
-            echo "Failed to create course and attach tags: " . $e->getMessage();
-        }
-    }
+    abstract public function createCourse($tagsArray);
     // work on createCourse and showCourse
 
     public static function showCourse()
@@ -103,5 +83,5 @@ class course implements coursInterface
 // }
 
 //add new course with tags
-$test = new course("Be A MASTER IN JS", "sagittis leo, sed interdum nisl nisl in erat. Aliquam volutpat suscipit faucibus. Suspendisse potenti.", NULL, "VEDEO.mp4", 2, 3);
-$test->createCourse([3, 4]);
+// $test = new course("Be A MASTER IN JS", "sagittis leo, sed interdum nisl nisl in erat. Aliquam volutpat suscipit faucibus. Suspendisse potenti.", NULL, "VEDEO.mp4", 2, 3);
+// $test->createCourse([3, 4]);

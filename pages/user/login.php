@@ -1,10 +1,9 @@
 <?php 
-require __DIR__. "/../../class/Etudiant.php";
+require __DIR__. "/../../class/Enseignant.php";
 if(isset($_POST['submit'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $test = new Etudiant("",$email,$password);
-    $test->login($email,$password);
+    $test = Enseignant::login($email,$password);
 }
 
 ?>

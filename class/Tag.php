@@ -1,5 +1,5 @@
 <?php 
-require __DIR__. "/../class/Database.php";
+require_once __DIR__. "/../class/Database.php";
 class tag{
     private $id;
     private $tags;
@@ -9,6 +9,7 @@ class tag{
         $this->tags = $tags;
     }
 
+    // this for admin to create multiple tags
     public function createTags(){
         $db = Database::getInstance()->getConnection();
         try{
@@ -26,23 +27,13 @@ class tag{
             echo "failed to insert multiples tags".$e->getMessage();
         }
     }
-    public function attachTagToCours($coursId){
+    // this to show the formateur all tags
+    public static function showTags(){
         $db = Database::getInstance()->getConnection();
-        try{
-            $db->beginTransaction();
-            foreach($this->tags as $tagId){
-                $sql = "insert into cours_tags(cours_id,tag_id) values(?,?)";
-                $stmt = $db->prepare($sql);
-                $stmt->execute([$coursId,$tagId]);
-            }
-            $db->commit();
-            echo "insterted successfully";
-        }
-        catch(PDOException $e){
-            $db->rollBack();
-            echo "failed to attach this tags to cours ".$e->getMessage(); 
-        }
-        // echo "inseerted successfully";
+        $sql = "select * from tags";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 

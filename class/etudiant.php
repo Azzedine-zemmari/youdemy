@@ -7,7 +7,7 @@ class Etudiant extends User{
         parent::__construct($nom,$email,$password,'Etudiant');
     }
 
-    public function login($email,$password){
+    public static function login($email,$password){
         $db = Database::getInstance()->getConnection();
         $sql = "select * from user where email = ? and role = 'Etudiant' ";
         $stmt = $db->prepare($sql);
@@ -15,9 +15,9 @@ class Etudiant extends User{
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if($user && password_verify($password,$user['password'])){
                 $_SESSION['userId'] = $user['id'];
-                $this->nom = $user['name'];
+                $_SESSION['nom'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
-                echo "welcome Etudiant {$this->nom}";
+                echo "welcome Etudiant {$user['name']}";
                 return true;
             }
             else{
