@@ -1,4 +1,5 @@
 <?php 
+session_start();
 require_once __DIR__."/../../class/Course.php";
 $id = $_GET['id'];
 
@@ -7,6 +8,11 @@ $course = course::showCourseById($id);
 $userEnrolled = false;
 if(isset($_POST['submit'])){
     $userEnrolled = true;
+    $coursId = $_POST['coursId'];
+    $userId = $_SESSION['userId'];
+    if(course::EnrollCourse($userId,$coursId)){
+        echo "done";
+    }
 }
 
 ?>
@@ -122,6 +128,7 @@ if(isset($_POST['submit'])){
                             <span class="text-2xl font-bold text-green-600"><?= $course['price']?></span>
                         </div>
                         <form action="" method="post">
+                            <input type="hidden" name="coursId" value="<?= $course['idCours'] ?>" >
                             <button name="submit" class="px-8 py-3 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition-colors duration-300">
                                 Enroll Now
                             </button>

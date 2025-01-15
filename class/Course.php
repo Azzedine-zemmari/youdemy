@@ -71,4 +71,12 @@ abstract class course
         $stmt->execute([$id]);
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public static function EnrollCourse($userId , $coursId){
+        $db =  Database::getInstance()->getConnection();
+        $sql = "insert into favoris(etudiant_id,cours_id) values(?,?)";
+        $stmt = $db->prepare($sql);
+        if($stmt->execute([$userId,$coursId])){
+            return true;
+        }
+    }
 }
