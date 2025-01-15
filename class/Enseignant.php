@@ -27,6 +27,16 @@ class Enseignant extends User{
         }
 
     }
+    public static function showMyCourses($id){
+        $db = Database::getInstance()->getConnection();
+        $sql = "select cours.*,categories.nom from youdemy.cours 
+        join categories on categories.idCategory = cours.Categorie_id 
+        where enseignant_id = ?";
+        $stmt = $db->prepare($sql);
+        if($stmt->execute([$id])){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 }
 
 // $test = new Enseignant("abid","abid@gmail.com","abid123");
