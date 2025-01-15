@@ -1,5 +1,5 @@
 <?php
-require __DIR__. "/./Database.php";
+require_once __DIR__. "/./Database.php";
 abstract class User{
     protected $id;
     protected $nom;
@@ -29,7 +29,7 @@ abstract class User{
     }
 
     abstract public static function login($email,$password);
-    public function logout(){
+    public static function logout(){
         session_unset();
         session_destroy();
         echo "you have been logged out";

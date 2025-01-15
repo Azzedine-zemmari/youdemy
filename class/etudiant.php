@@ -1,5 +1,5 @@
 <?php 
-// session_start();
+session_start();
 require_once __DIR__. "/./User.php";
 class Etudiant extends User{
     public function __construct($nom,$email,$password)
@@ -17,7 +17,7 @@ class Etudiant extends User{
                 $_SESSION['userId'] = $user['id'];
                 $_SESSION['nom'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
-                echo "welcome Etudiant {$user['name']}";
+                echo "welcome {$user['role']} {$user['name']}";
                 return true;
             }
             else{

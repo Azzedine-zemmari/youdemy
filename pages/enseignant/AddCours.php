@@ -4,6 +4,8 @@ require __DIR__ . "/../../class/Tag.php";
 require __DIR__ . "/../../class/Category.php";
 require_once __DIR__ . "/../../class/VedeoCourse.php";
 require_once __DIR__ . "/../../class/TextCourse.php";
+// require_once __DIR__."/../../class/Enseignant.php";
+// Enseignant::logout();
 $tags = tag::showTags();
 $categories = Category::showcateroies();
 if (isset($_POST['submit'])) {
@@ -17,12 +19,12 @@ if (isset($_POST['submit'])) {
 
     if (!isset($_POST['checkbox'])) {
         if (!empty($_FILES['contentVedeo']['name'])) {
-            $targetDir = __DIR__ . "/../../uploads/";
+            $targetDir = __DIR__."/../../uploads/";
             $vedeoName = basename($_FILES['contentVedeo']['name']);
             $targetFilePath = $targetDir . $vedeoName;
 
             if (move_uploaded_file($_FILES['contentVedeo']['tmp_name'], $targetFilePath)) {
-                $obj = new VedeoCourse($titre, $description, null, $targetFilePath, $categorieId, $enseignantId,$price);
+                $obj = new VedeoCourse($titre, $description, null, $vedeoName, $categorieId, $enseignantId,$price);
                 $obj->createCourse($tagsArray);
             } else {
                 echo "Error uploading file. Please check directory permissions.";

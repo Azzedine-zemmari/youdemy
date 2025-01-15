@@ -1,6 +1,8 @@
 <?php 
+session_start();
 require_once __DIR__."/../../class/Course.php";
 $courses = course::showCourse();
+// print_r( $_SESSION['nom']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,29 +52,33 @@ $courses = course::showCourse();
                 <!-- Course Card 1 -->
                 <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
                     <div class="relative">
-                        <img src="/api/placeholder/400/250" alt="Course" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110">
+                        <video  width="320" height="240"  alt="Course" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110">
+                        <source src="../../uploads/<?=$course['vedeo']?>" type="video/mp4">      
+                    </video>
                         <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                             Popular
                         </div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center mb-3">
-                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Web Development</span>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded"><?= $course['CategoryName'] ?></span>
                             <span class="ml-2 text-gray-500 text-sm">• 12 weeks</span>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2"></h3>
-                        <p class="text-gray-600 mb-4">Master modern web development from fundamentals to advanced concepts.</p>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2"><?= $course['titre'] ?></h3>
+                        <p class="text-gray-600 mb-4"><?= $course['description'] ?></p>
                         <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-green-600">$49.99</span>
-                            <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                                Enroll Now
-                            </button>
+                            <span class="text-2xl font-bold text-green-600">$<?= $course['price'] ?></span>
+                            <?php if(isset($_SESSION['userId']) && $_SESSION['role'] == 'Etudiant'): ?>
+                            <a href="/description.php?id=<?= $course['idCours'] ?>" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                Read More
+                            </a>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
                 <?php endforeach; ?>
                 <!-- Course Card 2 -->
-                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <!-- <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
                     <div class="relative">
                         <img src="/api/placeholder/400/250" alt="Course" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110">
                         <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -93,10 +99,10 @@ $courses = course::showCourse();
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Course Card 3 -->
-                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                <!-- <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
                     <div class="relative">
                         <img src="/api/placeholder/400/250" alt="Course" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110">
                         <div class="absolute top-4 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -117,7 +123,7 @@ $courses = course::showCourse();
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <!-- Pagination -->
