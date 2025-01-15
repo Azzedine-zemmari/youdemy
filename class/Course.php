@@ -79,4 +79,10 @@ abstract class course
             return true;
         }
     }
+    public static function isUserEnrolled($userId, $courseId) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM favoris WHERE etudiant_id = ? AND cours_id = ?");
+        $stmt->execute([$userId, $courseId]);
+        return $stmt->fetchColumn() > 0;
+    }
 }

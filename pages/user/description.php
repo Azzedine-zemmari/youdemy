@@ -4,14 +4,19 @@ require_once __DIR__."/../../class/Course.php";
 $id = $_GET['id'];
 
 $course = course::showCourseById($id);
-// print_r($course);
-$userEnrolled = false;
+
+// Check if the user is already enrolled in the course
+if(isset($_SESSION['userId'])){
+    $userId = $_SESSION['userId'];
+    $userEnrolled = course::isUserEnrolled($userId,$id);
+}
+
 if(isset($_POST['submit'])){
     $userEnrolled = true;
     $coursId = $_POST['coursId'];
     $userId = $_SESSION['userId'];
     if(course::EnrollCourse($userId,$coursId)){
-        echo "done";
+        $userEnrolled = true;
     }
 }
 
