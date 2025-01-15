@@ -4,6 +4,10 @@ $id = $_GET['id'];
 
 $course = course::showCourseById($id);
 // print_r($course);
+$userEnrolled = false;
+if(isset($_POST['submit'])){
+    $userEnrolled = true;
+}
 
 ?>
 
@@ -21,20 +25,44 @@ $course = course::showCourseById($id);
         <div class="container mx-auto px-4 py-8">
             <div class="grid lg:grid-cols-2 gap-12 items-start">
                 <!-- Video/Image Section -->
-                <div class="relative group rounded-2xl overflow-hidden shadow-xl bg-black aspect-video">
-                        <video 
-                            id="courseVideo"
-                            class="w-full h-full object-cover"
-                            poster=""
-                            controls
-                        >
-                            <source src="<?= $course['vedeo'] ?>" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            Video Course
-                        </div>
-                    </div>
+                <?php if($course['type'] == "vedeo"): ?>
+    <?php if($userEnrolled): // Check if the user is enrolled ?>
+        <div class="relative group rounded-2xl overflow-hidden shadow-xl bg-black aspect-video">
+            <video 
+                id="courseVideo"
+                class="w-full h-full object-cover"
+                poster=""
+                controls
+            >
+                <source src="<?= $course['video'] ?>" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                Video Course
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Access Restricted!</strong>
+            <span class="block sm:inline">You need to enroll in this course to access its content.</span>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+
+<?php if($course['type'] == "text"): ?>
+    <?php if($userEnrolled): // Check if the user is enrolled ?>
+        <div class="bg-gray-100 border border-gray-400 text-gray-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Course Content:</strong>
+            <span class="block sm:inline"><?= $course['contenu'] ?></span>
+        </div>
+    <?php else: ?>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Access Restricted!</strong>
+            <span class="block sm:inline">You need to enroll in this course to access its content.</span>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+
 
                 <!-- Course Info -->
                 <div class="space-y-6">
@@ -93,9 +121,11 @@ $course = course::showCourseById($id);
                             </svg>
                             <span class="text-2xl font-bold text-green-600"><?= $course['price']?></span>
                         </div>
-                        <button class="px-8 py-3 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition-colors duration-300">
-                            Enroll Now
-                        </button>
+                        <form action="" method="post">
+                            <button name="submit" class="px-8 py-3 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition-colors duration-300">
+                                Enroll Now
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -230,6 +260,8 @@ $course = course::showCourseById($id);
             document.getElementById(`tab-${tabName}`).classList.remove('border-transparent', 'text-gray-500');
             document.getElementById(`tab-${tabName}`).classList.add('border-green-600', 'text-green-600');
         }
+        const enrollButton = document.getElementById("Enroll")
+        
     </script>
 </body>
 </html>
