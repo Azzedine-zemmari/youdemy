@@ -1,28 +1,22 @@
-<?php 
+<?php
 session_start();
-require __DIR__."/../../class/Tag.php";
-require __DIR__."/../../class/Category.php";
-require_once __DIR__."/../../class/VedeoCourse.php";
+require __DIR__ . "/../../class/Tag.php";
+require __DIR__ . "/../../class/Category.php";
+require_once __DIR__ . "/../../class/VedeoCourse.php";
+require_once __DIR__ . "/../../class/TextCourse.php";
 $tags = tag::showTags();
 $categories = Category::showcateroies();
 if (isset($_POST['submit'])) {
-    var_dump($_POST);
-    var_dump($_FILES['contentVedeo']['error']);
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $content = $_POST['content'];
     $categorieId = $_POST['categorieId'];
-    $tagsArray = $_POST['tags'] ?? [];
+    $tagsArray = $_POST['tags'];
     $enseignantId = $_SESSION['userId'];
 
-    if (empty($titre) || empty($description) || empty($categorieId) || empty($tagsArray)) {
-        echo "Please fill in all required fields.";
-        exit;
-    }
-
-    if (!isset($_POST['checkbox'])) { 
+    if (!isset($_POST['checkbox'])) {
         if (!empty($_FILES['contentVedeo']['name'])) {
-            $targetDir = __DIR__."/../../uploads/";
+            $targetDir = __DIR__ . "/../../uploads/";
             $vedeoName = basename($_FILES['contentVedeo']['name']);
             $targetFilePath = $targetDir . $vedeoName;
 
@@ -35,19 +29,14 @@ if (isset($_POST['submit'])) {
         } else {
             echo "No video file selected.";
         }
+    } else {
+        if (!empty($content)) {
+            $obj = new TextCourse($titre, $description, $content, null, $categorieId, $enseignantId);
+            $obj->createCourse($tagsArray);
+        } else {
+            echo "Please provide course content.";
+        }
     }
-    // } else { // Text content case
-    //     if (!empty($content)) {
-    //         $obj = new VedeoCourse($titre, $description, $content, null, $categorieId, $enseignantId);
-    //         if ($obj->createCourse($tagsArray)) {
-    //             echo "Text-based course created successfully.";
-    //         } else {
-    //             echo "Failed to save course.";
-    //         }
-    //     } else {
-    //         echo "Please provide course content.";
-    //     }
-    // }
 }
 
 
@@ -119,7 +108,8 @@ if (isset($_POST['submit'])) {
             font-size: 0.875rem;
             color: #1A906B;
         }
-        .hidden{
+
+        .hidden {
             display: none;
         }
     </style>
@@ -173,17 +163,17 @@ if (isset($_POST['submit'])) {
                     <div class="mb-6">
                         <select name="categorieId" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300">
                             <option value="">Select Category</option>
-                            <?php foreach($categories as $category): ?>
-                            <option value="<?= $category['idCategory'] ?>"><?= $category['nom'] ?></option>
-                            <?php endforeach;?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $category['idCategory'] ?>"><?= $category['nom'] ?></option>
+                            <?php endforeach; ?>
                             <!-- Add more categories dynamically -->
                         </select>
                     </div>
                     <div class="mb-6">
                         <select name="tags[]" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300" multiple>
-                            <?php foreach($tags as $tag): ?>                            
-                            <option value="<?= $tag['idTag']?>"><?=$tag['nom'] ?></option>
-                            <?php endforeach;?>
+                            <?php foreach ($tags as $tag): ?>
+                                <option value="<?= $tag['idTag'] ?>"><?= $tag['nom'] ?></option>
+                            <?php endforeach; ?>
                             <!-- Add more tags dynamically -->
                         </select>
                         <small class="text-gray-500">Hold Ctrl (or Cmd on Mac) to select multiple tags.</small>
@@ -202,15 +192,14 @@ if (isset($_POST['submit'])) {
         </div>
     </section>
     <script>
-        function toggleContentInput(checkbox){
+        function toggleContentInput(checkbox) {
             const TextInputContainer = document.getElementById("TextContent");
             const fileInputContainer = document.getElementById("fileInputContainer");
 
-            if(checkbox.checked){
-                TextInputContainer.style.display ="block";
+            if (checkbox.checked) {
+                TextInputContainer.style.display = "block";
                 fileInputContainer.style.display = "none";
-            }
-            else{
+            } else {
                 TextInputContainer.style.display = 'none';
                 fileInputContainer.style.display = "block";
             }
