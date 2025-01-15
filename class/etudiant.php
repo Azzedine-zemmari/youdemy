@@ -25,6 +25,18 @@ class Etudiant extends User{
             }
         }
     }
+    // show enrolled Courses by a student
+    public static function showEnrolledCourses($userId){
+        $db = Database::getInstance()->getConnection();
+        $sql = "select user.name as etudiantName , cours.titre as titreCours , cours.description as description , cours.vedeo as vedeo , cours.idCours as CoursId   from youdemy.favoris 
+        join user on user.id = favoris.etudiant_id 
+        join cours on cours.idCours = favoris.cours_id
+        where user.id = ?";
+        $stmt = $db->prepare($sql);
+        if($stmt->execute([$userId])){
+           return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 }
 
 // $test = new Etudiant("amine","amine@gmail.com","amine4000");

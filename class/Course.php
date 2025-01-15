@@ -85,4 +85,5 @@ abstract class course
         $stmt->execute([$userId, $courseId]);
         return $stmt->fetchColumn() > 0;
     }
+    
 }
