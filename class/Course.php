@@ -11,8 +11,9 @@ abstract class course
     protected $categorieId;
     protected $enseignantId;
     protected $type;
+    protected $price;
 
-    public function __construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId,$type=null)
+    public function __construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId,$price,$type=null)
     {
         $this->titre = $titre;
         $this->description = $description;
@@ -21,6 +22,7 @@ abstract class course
         $this->categorieId = $categorieId;
         $this->enseignantId = $enseignantId;
         $this->type = $type;
+        $this->price = $price;
     }
 
 
@@ -56,32 +58,3 @@ abstract class course
         return $result;
     }
 }
-
-// $test = new course("from zero to hero in HTML5","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum semper, libero sed mollis porta, purus mi sagittis leo, sed interdum nisl nisl in erat. Aliquam volutpat suscipit faucibus. Suspendisse potenti.","
-// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum semper, libero sed mollis porta, purus mi sagittis leo, sed interdum nisl nisl in erat. Aliquam volutpat suscipit faucibus. Suspendisse potenti. Donec non turpis semper, tempus metus id, molestie dolor. Quisque nec dolo",NULL,1,3);
-// $test->createCourse();
-
-// $courses = course::showCourse();
-// if(!empty($courses)){
-//     foreach($courses as $course){
-//         echo "Title: ".$course['titre']."<br/>";
-//         echo "Description: ".$course['description']."<br/>";
-//         echo "Contenu: ".$course['contenu']."<br/>";
-//         echo "Category: ".$course['CategoryName']."<br/>";
-//         echo "Formateur: ".$course['EnseignantName']."<br/>";
-//     }
-// }
-
-// $test = course::recherche("css");
-// if(!empty($test)){
-//     foreach($test as $t){
-//         echo "Title: ".$t['titre'];
-//     }
-// }
-// else{
-//     echo "nothing found ";
-// }
-
-//add new course with tags
-// $test = new course("Be A MASTER IN JS", "sagittis leo, sed interdum nisl nisl in erat. Aliquam volutpat suscipit faucibus. Suspendisse potenti.", NULL, "VEDEO.mp4", 2, 3);
-// $test->createCourse([3, 4]);

@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
     $categorieId = $_POST['categorieId'];
     $tagsArray = $_POST['tags'];
     $enseignantId = $_SESSION['userId'];
+    $price = $_POST['price'];
 
     if (!isset($_POST['checkbox'])) {
         if (!empty($_FILES['contentVedeo']['name'])) {
@@ -21,7 +22,7 @@ if (isset($_POST['submit'])) {
             $targetFilePath = $targetDir . $vedeoName;
 
             if (move_uploaded_file($_FILES['contentVedeo']['tmp_name'], $targetFilePath)) {
-                $obj = new VedeoCourse($titre, $description, null, $targetFilePath, $categorieId, $enseignantId);
+                $obj = new VedeoCourse($titre, $description, null, $targetFilePath, $categorieId, $enseignantId,$price);
                 $obj->createCourse($tagsArray);
             } else {
                 echo "Error uploading file. Please check directory permissions.";
@@ -31,7 +32,7 @@ if (isset($_POST['submit'])) {
         }
     } else {
         if (!empty($content)) {
-            $obj = new TextCourse($titre, $description, $content, null, $categorieId, $enseignantId);
+            $obj = new TextCourse($titre, $description, $content, null, $categorieId, $enseignantId,$price);
             $obj->createCourse($tagsArray);
         } else {
             echo "Please provide course content.";
@@ -177,6 +178,9 @@ if (isset($_POST['submit'])) {
                             <!-- Add more tags dynamically -->
                         </select>
                         <small class="text-gray-500">Hold Ctrl (or Cmd on Mac) to select multiple tags.</small>
+                    </div>
+                    <div class="mb-6">
+                        <input type="number" name="price" placeholder="$" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300">
                     </div>
                     <button type="submit" name="submit" class="w-full bg-primary-500 text-white font-display font-semibold py-4 px-6 rounded hover:bg-primary-600 transition duration-300">
                         Register Course

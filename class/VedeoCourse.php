@@ -4,9 +4,9 @@ require_once __DIR__."/Course.php";
 
 
 class VedeoCourse extends course{
-    public function __construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId)
+    public function __construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId,$price)
     {
-        parent::__construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId,'vedeo');
+        parent::__construct($titre, $description, $content, $contentVedeo, $categorieId, $enseignantId, $price, 'vedeo');
     }
     public function createCourse($tagsArray)
     {
@@ -14,9 +14,9 @@ class VedeoCourse extends course{
 
         try {
             $db->beginTransaction();
-            $sql = "insert into cours(titre,description,contenu,vedeo,categorie_id,enseignant_id) values(?,?,?,?,?,?)";
+            $sql = "insert into cours(titre,description,contenu,vedeo,categorie_id,enseignant_id,price,type) values(?,?,?,?,?,?,?,?)";
             $stmt = $db->prepare($sql);
-            $stmt->execute([$this->titre, $this->description, $this->content, $this->contentVedeo, $this->categorieId, $this->enseignantId]);
+            $stmt->execute([$this->titre, $this->description, $this->content, $this->contentVedeo, $this->categorieId, $this->enseignantId,$this->price,$this->type]);
 
             $coursId = $db->lastInsertId();
 
