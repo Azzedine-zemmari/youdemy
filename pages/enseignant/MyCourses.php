@@ -54,7 +54,7 @@ $cours = Enseignant::showMyCourses($enseignantId);
                         <td class="py-3 px-4"><?= $cour['date_creation'] ?></td>
                         <td class="py-3 px-4 flex gap-2">
                             <a href="./EditMyCourse.php?id=<?= $cour['idCours'] ?>" class="text-blue-500 hover:text-blue-700 transition-colors duration-300">Edit</a> | 
-                            <a href="./DeleteMyCourse.php?id=<?= $cour['idCours'] ?>" class="text-red-500 hover:text-red-700 transition-colors duration-300" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
+                            <a href="./deleteCourse.php?id=<?= $cour['idCours'] ?>&type=<?= $cour['type'] ?>" class="text-red-500 hover:text-red-700 transition-colors duration-300" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

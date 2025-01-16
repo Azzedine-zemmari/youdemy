@@ -97,5 +97,17 @@ abstract class course
             echo "Error updating the course.";
         }
     }
-    
+    public static function deleteCourse($id){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "delete from cours where idCours = ?";
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute([$id])){
+            echo "Cours deleted success";
+        }
+        else{
+            echo "failed to delete";
+        }
+    }
 }
