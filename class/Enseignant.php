@@ -57,6 +57,25 @@ class Enseignant extends User{
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+    public static function NbrEtudiantInscrit($id){
+        $db = Database::getInstance()->getConnection();
+        $sql = "select count(*) as total from favoris f 
+        join user u1 on u1.id = f.etudiant_id 
+        join cours c on f.cours_id = c.idCours 
+        join user u2 on u2.id = c.enseignant_id 
+        where u2.id = ?;";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);  
+        return $stmt->fetchColumn();
+    }
+    public static function NbrCours($id){
+        $db = Database::getInstance()->getConnection();
+        $sql = "select count(*) as total from cours 
+        where enseignant_id = ?;";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetchColumn();
+    }
 }
 
 // $test = new Enseignant("abid","abid@gmail.com","abid123");
