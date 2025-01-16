@@ -37,6 +37,26 @@ class Enseignant extends User{
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }   
+    public static function MesInscription($id){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "select 
+        u1.id as StudentId,
+        u1.name as StudentName,
+        c.idCours as CoursId,
+        c.titre as CourseTitle,
+        u2.id as TeacherId,
+        u2.name as TeacherName
+        from favoris f
+        join user u1 on u1.id = f.etudiant_id
+        join cours c on c.idCours = f.cours_id
+        join user u2 on u2.id = c.enseignant_id";
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 }
 
 // $test = new Enseignant("abid","abid@gmail.com","abid123");
