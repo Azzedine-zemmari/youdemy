@@ -4,6 +4,7 @@
 require_once __DIR__."/../../class/Enseignant.php";
 $enseignantId = $_SESSION['userId'];
 $cours = Enseignant::showMyCourses($enseignantId);
+// Enseignant::logout();
 ?>
 
 <!DOCTYPE html>
@@ -46,14 +47,14 @@ $cours = Enseignant::showMyCourses($enseignantId);
                         <td class="py-3 px-4"><?= $cour['idCours'] ?></td>
                         <td class="py-3 px-4"><?= $cour['titre'] ?></td>
                         <td class="py-3 px-4"><?= $cour['description'] ?></td>
-                        <td class="py-3 px-4"><?= $cour['contenu'] ?></td>
+                        <td class="py-3 px-4 truncate max-w-xs"><?= $cour['contenu'] ?></td>
                         <td class="py-3 px-4"><?= $cour['nom'] ?></td>
                         <td class="py-3 px-4"><?= $cour['type'] ?></td>
                         <td class="py-3 px-4"><?= $cour['price'] ?></td>
                         <td class="py-3 px-4"><?= $cour['date_creation'] ?></td>
                         <td class="py-3 px-4 flex gap-2">
-                            <a href="edit.php?id=<?= $cour['idCours'] ?>" class="text-blue-500 hover:text-blue-700 transition-colors duration-300">Edit</a> | 
-                            <a href="delete.php?id=<?= $cour['idCours'] ?>" class="text-red-500 hover:text-red-700 transition-colors duration-300" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
+                            <a href="./EditMyCourse.php?id=<?= $cour['idCours'] ?>" class="text-blue-500 hover:text-blue-700 transition-colors duration-300">Edit</a> | 
+                            <a href="./DeleteMyCourse.php?id=<?= $cour['idCours'] ?>" class="text-red-500 hover:text-red-700 transition-colors duration-300" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -123,6 +123,17 @@ if(isset($_POST['submit'])){
                             <span>Online Access</span>
                         </div>
                     </div>
+                    <div>
+                    <?php 
+                    // Split the tags by comma and display each as a badge
+                    $tags = explode(',', $course['tags']); 
+                    foreach ($tags as $tag): 
+                    ?>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mr-1">
+                            <?= $tag ?>
+                        </span>
+                    <?php endforeach; ?>
+                    </div>
 
                     <div class="flex items-center justify-between pt-6">
                         <div class="flex items-center space-x-2">

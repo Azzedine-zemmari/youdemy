@@ -85,5 +85,17 @@ abstract class course
         $stmt->execute([$userId, $courseId]);
         return $stmt->fetchColumn() > 0;
     }
+
+    public function updateCourse($id){
+        $db = Database::getInstance()->getConnection();
+        $sql = "UPDATE cours SET titre = ?, description = ?, contenu = ?, vedeo = ?, categorie_id = ? WHERE idCours = ?";
+        $stmt = $db->prepare($sql);
+    
+        if($stmt->execute([$this->titre, $this->description, $this->content, $this->contentVedeo, $this->categorieId, $id])) {
+            echo "Update successful!";
+        } else {
+            echo "Error updating the course.";
+        }
+    }
     
 }

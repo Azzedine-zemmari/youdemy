@@ -36,7 +36,7 @@ class Enseignant extends User{
         if($stmt->execute([$id])){
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-    }
+    }   
 }
 
 // $test = new Enseignant("abid","abid@gmail.com","abid123");
