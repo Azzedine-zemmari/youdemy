@@ -1,13 +1,13 @@
 <?php 
-require_once __DIR__."/../../class/Tag.php";
-$tags = tag::showTags();
+require_once __DIR__."/../../class/Category.php";
+$categories = Category::showcateroies();
 
 if(isset($_POST['submit'])){
-    $tago = $_POST['tags'];
 
-    $tag = new tag($tago);
-
-    $response = $tag->createTags();
+    $categorie = $_POST['category'];
+    
+    $cat = new Category($categorie);
+    $cat->createCategory();
 
 }
 ?>
@@ -38,7 +38,7 @@ if(isset($_POST['submit'])){
     <div class="container mx-auto px-4 pb-8">
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <div class="p-6 border-b">
-                <h2 class="text-xl font-semibold text-gray-800">Tags Management</h2>
+                <h2 class="text-xl font-semibold text-gray-800">Category Management</h2>
             </div>
             <div class="p-6">
                 <table id="coursesTable" class="w-full text-sm text-left text-gray-500">
@@ -55,19 +55,19 @@ if(isset($_POST['submit'])){
                         // var_dump($tags[0]);
                          
                         // die;
-                        foreach ($tags as $tag): ?>
+                        foreach ($categories as $c): ?>
                         <tr class="bg-white border-b hover:bg-gray-50">
-                            <td class="px-6 py-4"><?= $tag['idTag'] ?></td>
-                            <td class="px-6 py-4 font-medium text-gray-900"><?= $tag['nom'] ?></td>
+                            <td class="px-6 py-4"><?= $c['idCategory'] ?></td>
+                            <td class="px-6 py-4 font-medium text-gray-900"><?= $c['nom'] ?></td>
                             <td class="px-6 py-4">
                                 <div class="flex space-x-3">
-                                    <a href="./updateTag.php?id=<?= $tag['idTag'] ?>"
+                                    <a href="./updateCategory.php?id=<?= $c['idCategory']  ?>"
                                         class="text-blue-600 hover:text-blue-900">
                                         Edit
                                     </a>
-                                    <a href="./deleteTag.php?id=<?= $tag['idTag'] ?>"
+                                    <a href="./deleteCategory.php?id=<?= $c['idCategory']  ?>"
                                         class="text-red-600 hover:text-red-900"
-                                        onclick="return confirm('Are you sure you want to delete this tag?');">
+                                        onclick="return confirm('Are you sure you want to delete this category?');">
                                         Delete
                                     </a>
                                 </div>
@@ -87,7 +87,7 @@ if(isset($_POST['submit'])){
             <!-- Modal Header -->
             <div class="border-b px-6 py-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-gray-900">Add New Tags</h3>
+                    <h3 class="text-xl font-semibold text-gray-900">Add New Category</h3>
                     <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -106,7 +106,7 @@ if(isset($_POST['submit'])){
                     <div id="tagsContainer" class="space-y-3">
                         <div class="flex items-center gap-2">
                             <input type="text" 
-                            name="tags"
+                            name="category"
                                 class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none" 
                                 placeholder="Enter tag name">
                         </div>

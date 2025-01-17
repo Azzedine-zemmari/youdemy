@@ -36,6 +36,47 @@ class tag{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public static function deleteTag($idTag){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "delete from tags where idTag = ?";
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute([$idTag])){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function updateTag($idTag){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "update tags set nom = ? where idTag = ? ";
+
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute([$this->tags,$idTag])){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static function selectById($id){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "select * from tags where idTag = ?";
+
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute([$id])){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        else{
+            return false;
+        }
+    }
 }
 
 // $arragyTags = [1,2,3];
