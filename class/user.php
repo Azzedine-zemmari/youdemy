@@ -37,6 +37,6 @@ abstract class User{
     public static function logout(){
         session_unset();
         session_destroy();
-        echo "you have been logged out";
+        header("Location: /pages/user/register.php");
     }
 }

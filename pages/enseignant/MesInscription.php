@@ -4,7 +4,9 @@
 require_once __DIR__."/../../class/Enseignant.php";
 $enseignantId = $_SESSION['userId'];
 $cours = Enseignant::MesInscription($enseignantId);
-// Enseignant::logout();
+if (isset($_SESSION['status']) &&  $_SESSION['status'] == 'not allowed') {
+    header("Location: ./bannedPage.php");
+}
 ?>
 
 <!DOCTYPE html>

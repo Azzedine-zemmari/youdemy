@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (isset($_SESSION['status']) &&  $_SESSION['status'] == 'not allowed') {
+    header("Location: ./bannedPage.php");
+}
 require __DIR__ . "/../../class/Tag.php";
 require __DIR__ . "/../../class/Category.php";
 require_once __DIR__ . "/../../class/VedeoCourse.php";

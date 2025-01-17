@@ -62,9 +62,11 @@ class Admin extends User{
         $stmt = $db->prepare($sql);
 
         if($stmt->execute([$userId])){
+            $_SESSION['status'] = 'not allowed';
             return true;
         }
         else{
+            $_SESSION['status'] = 'wait';
             return false;
         }
     }

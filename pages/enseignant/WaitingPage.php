@@ -4,7 +4,7 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == 'welcome') {
     header("Location: ./MyCourses.php");
     exit();
 }
-print_r($_SESSION);
+// print_r($_SESSION);
 ?>
 
 <!DOCTYPE html>

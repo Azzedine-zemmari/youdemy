@@ -2,6 +2,9 @@
 // session_start();
 require_once __DIR__ . "/../../class/Enseignant.php";
 
+if (isset($_SESSION['status']) &&  $_SESSION['status'] == 'not allowed') {
+    header("Location: ./bannedPage.php");
+}
 
 // Fetch teacher data
 $enseignantId = $_SESSION['userId'];
