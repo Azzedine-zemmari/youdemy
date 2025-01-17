@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require "./User.php";
+require_once __DIR__. "/User.php";
 
 class Admin extends User{
     public function __construct($nom,$email,$password)
@@ -27,8 +27,35 @@ class Admin extends User{
             }
         }
     }
+    public static function showAllEnseignant(){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "select * from user where role = 'Enseignant'";
+
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+    public static function activeEnseignant($userID){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "update user set status = 'active' where id = ?";
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute([$userID])){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+        
+    }
+
 }
 
-$test = new Admin("Azzedine","azzedine@gmail.com","azzedine2004");
+// $test = new Admin("Azzedine","azzedine@gmail.com","azzedine2004");
 // $test->register();
 // $test->login("azzedine@gmail.com","azzedine2004");
