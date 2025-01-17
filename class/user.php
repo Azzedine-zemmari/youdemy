@@ -20,7 +20,12 @@ abstract class User{
         $sql = 'insert into user(name,email,password,role) values(?,?,?,?)';
         $stmt = $db->prepare($sql);
         if($stmt->execute([$this->nom,$this->email,$this->password,$this->role])){
-            echo "{$this->nom} is registered";
+            if($this->role == "Enseignant"){
+                header("Location: ../enseignant/loginEnseignant.php");
+            }
+            else if($this->role == "Etudiant"){
+                header("Location: ../user/login.php");
+            }
         }
         else{
             echo "error";

@@ -1,11 +1,10 @@
 <?php 
-require __DIR__. "/../../class/Etudiant.php";
+require __DIR__. "/../../class/Enseignant.php";
 // require_once __DIR__."/../../class/Etudiant.php";
 if(isset($_POST['submit'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $test = Etudiant::login($email,$password);
-    
+    $test = Enseignant::login($email,$password);
 }
 
 ?>

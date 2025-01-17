@@ -1,10 +1,11 @@
 <?php
+// session_start();
 require_once __DIR__ . "/../../class/Enseignant.php";
+
 
 // Fetch teacher data
 $enseignantId = $_SESSION['userId'];
 $cours = Enseignant::showMyCourses($enseignantId);
-
 // Calculate statistics
 $totalCourses = Enseignant::NbrCours($enseignantId);
 $totalStudents = Enseignant::NbrEtudiantInscrit($enseignantId);

@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 require_once __DIR__. "/./User.php";
 
 class Enseignant extends User{
@@ -19,7 +19,7 @@ class Enseignant extends User{
                 $_SESSION['userId'] = $user['id'];
                 $_SESSION['userName'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
-                echo "welcome Enseignant {$user['name']}";
+                header("Location: /edex-html/pages/enseignant/WaitingPage.php");
             }
             else{
                 echo "error in the login";

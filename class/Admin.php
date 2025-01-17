@@ -45,10 +45,13 @@ class Admin extends User{
         $stmt = $db->prepare($sql);
 
         if($stmt->execute([$userID])){
+            $_SESSION['status'] = 'welcome';
             return true;
         }
         else{
             return false;
+            $_SESSION['status'] = 'wait';
+
         }
     }
 
