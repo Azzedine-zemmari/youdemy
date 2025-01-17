@@ -2,7 +2,7 @@
 require_once __DIR__. "/../class/Database.php";
 class tag{
     private $id;
-    private $tags;
+    private $tags  ;
 
     public function __construct($tags)
     {
@@ -14,7 +14,8 @@ class tag{
         $db = Database::getInstance()->getConnection();
         try{
             $db->beginTransaction();
-            foreach($this->tags as $tag){
+            $tagArray = explode(',', $this->tags);
+            foreach($tagArray as $tag){
                 $sql = "insert into tags(nom) values(?)";
                 $stmt = $db->prepare($sql);
                 $stmt->execute([$tag]);
@@ -33,7 +34,7 @@ class tag{
         $sql = "select * from tags";
         $stmt = $db->prepare($sql);
         $stmt->execute();
-        return $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
