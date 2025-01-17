@@ -50,10 +50,21 @@ class Admin extends User{
         else{
             return false;
         }
-        
-        
     }
 
+    public static function desactivEnseignant($userId){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "update user set status = 'suspended' where id = ?";
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute([$userId])){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
 
 // $test = new Admin("Azzedine","azzedine@gmail.com","azzedine2004");

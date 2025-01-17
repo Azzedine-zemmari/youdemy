@@ -96,9 +96,9 @@ $enseiants = Admin::showAllEnseignant();
                                                 class="text-blue-600 hover:text-blue-900">
                                                 activer
                                             </a>
-                                            <a href="./deleteCourse.php?id=<?= $enseiant['id'] ?>&type=<?= $cour['type'] ?>"
+                                            <a href="./DesactiverEnseignant.php?id=<?= $enseiant['id'] ?>"
                                                 class="text-red-600 hover:text-red-900"
-                                                onclick="return confirm('Are you sure you want to delete this course?');">
+                                                onclick="return confirm('Are you sure you want to desactive this teacher?');">
                                                 desactiver
                                             </a>
                                         </div>
