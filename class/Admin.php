@@ -70,6 +70,44 @@ class Admin extends User{
             return false;
         }
     }
+    public static function getallUser(){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "select * from user where role = 'Etudiant'";
+
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+    public static function desactiveUser($userId){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "update user set status = 'suspended' where id = ?";
+
+        $stmt = $db->prepare($sql);
+        
+        if($stmt->execute([$userId])){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static function activeUser($userId){
+        $db = Database::getInstance()->getConnection();
+        $sql = "update user set status = 'active' where id = ?";
+
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute([$userId])){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
 
 // $test = new Admin("Azzedine","azzedine@gmail.com","azzedine2004");
