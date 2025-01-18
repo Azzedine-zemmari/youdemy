@@ -1,11 +1,18 @@
-<?php 
+<?php
 session_start();
-require_once __DIR__."/../../class/Course.php";
-$courses = course::showCourses();
+require_once __DIR__ . "/../../class/Course.php";
+if(isset($_POST['submitSearch'])){
+    $searchCourse = $_POST['searchInput'];
+    $courses = course::search($searchCourse);
+}
+else{
+    $courses = course::showCourses();
+}
 // print_r( $_SESSION['nom']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +21,7 @@ $courses = course::showCourses();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-50">
     <section class="min-h-screen bg-gradient-to-b from-green-50 to-white">
         <div class="container px-4 sm:px-6 2xl:px-0 mx-auto">
@@ -32,7 +40,7 @@ $courses = course::showCourses();
                     <h2 class="text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 mb-6">
                         Join <span class="text-green-600 relative">World's largest
                             <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 10 Q 25 0, 50 10 T 100 10" stroke="currentColor" fill="none" stroke-width="2"/>
+                                <path d="M0 10 Q 25 0, 50 10 T 100 10" stroke="currentColor" fill="none" stroke-width="2" />
                             </svg>
                         </span> learning platform
                     </h2>
@@ -46,36 +54,56 @@ $courses = course::showCourses();
                 </div>
             </div>
 
+            <!-- Search Bar Section -->
+            <div class="mt-16 mb-8">
+                <form action="" method="post">
+                    <div class="w-full max-w-md mx-auto flex items-center bg-white p-4 rounded-full shadow-lg">
+                        <input type="text" id="searchInput" name="searchInput" class="w-full px-4 py-2 text-lg text-gray-700 placeholder-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Search for courses...">
+                        <button id="searchButton" name="submitSearch" class="ml-3 text-green-600 font-medium hover:text-green-700">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                        </button>
+    
+    
+                    </div>
+                </form>
+            </div>
+
             <!-- Course Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-20 mb-16">
-                <?php foreach($courses as $course): ?>
-                <!-- Course Card 1 -->
-                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
-                    <div class="relative">
-                        <video  width="320" height="240"  alt="Course" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110">
-                        <source src="../../uploads/<?=$course['vedeo']?>" type="video/mp4">      
-                    </video>
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            Popular
+                <?php foreach ($courses as $course): ?>
+                    <!-- Course Card 1 -->
+                    <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                        <div class="relative">
+                            <video width="320" height="240" alt="Course" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110">
+                                <source src="../../uploads/<?= $course['vedeo'] ?>" type="video/mp4">
+                            </video>
+                            <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                                Popular
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center mb-3">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded"><?= $course['CategoryName'] ?></span>
+                                <span class="ml-2 text-gray-500 text-sm">• 12 weeks</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2"><?= $course['titre'] ?></h3>
+                            <p class="text-gray-600 mb-4"><?= $course['description'] ?></p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-green-600">$<?= $course['price'] ?></span>
+                                <?php if (isset($_SESSION['userId']) && $_SESSION['role'] == 'Etudiant'): ?>
+                                    <a href="./description.php?id=<?= $course['idCours'] ?>" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                        Read More
+                                    </a>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded"><?= $course['CategoryName'] ?></span>
-                            <span class="ml-2 text-gray-500 text-sm">• 12 weeks</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2"><?= $course['titre'] ?></h3>
-                        <p class="text-gray-600 mb-4"><?= $course['description'] ?></p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-green-600">$<?= $course['price'] ?></span>
-                            <?php if(isset($_SESSION['userId']) && $_SESSION['role'] == 'Etudiant'): ?>
-                            <a href="./description.php?id=<?= $course['idCours'] ?>" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                                Read More
-                            </a>
-                            <?php endif;?>
-                        </div>
-                    </div>
-                </div>
                 <?php endforeach; ?>
                 <!-- Course Card 2 -->
                 <!-- <div class="group bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
@@ -157,4 +185,5 @@ $courses = course::showCourses();
         });
     </script>
 </body>
+
 </html>
