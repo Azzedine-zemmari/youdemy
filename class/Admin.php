@@ -121,6 +121,34 @@ class Admin extends User{
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+    public static function BestCours(){
+        $db = Database::getInstance()->getConnection();
+        $sql = "select cours.titre ,count(user.id) as etudNbr from cours
+        join favoris on cours.idCours= favoris.cours_id
+        join user on user.id = favoris.etudiant_id
+        group by cours.idCours
+        order by etudNbr Desc
+        limit 1;";
+        $stmt = $db->prepare($sql);
+
+        if($stmt->execute()){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+    public static function topThreeTeachers(){
+        $db = Database::getInstance()->getConnection();
+        $sql = "SELECT u1.name, COUNT(favoris.cours_id) AS enrolle_count
+        FROM user u1
+        JOIN cours ON cours.enseignant_id = u1.id
+        JOIN favoris ON favoris.cours_id = cours.idCours
+        GROUP BY u1.id
+        ORDER BY enrolle_count DESC
+        LIMIT 3;";
+        $stmt = $db->prepare($sql);
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 }
 
 // $test = new Admin("Azzedine","azzedine@gmail.com","azzedine2004");

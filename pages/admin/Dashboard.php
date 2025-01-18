@@ -3,7 +3,8 @@ require_once __DIR__ . "/../../class/Admin.php";
 
 $enseiants = Admin::showAllEnseignant();
 $nbrCourseBYCategory = Admin::CountCoursByCategory();
-
+$bestCourse = Admin::BestCours();
+$topTeachers = Admin::topThreeTeachers();
 // Calculate statistics
 ?>
 
@@ -57,7 +58,52 @@ $nbrCourseBYCategory = Admin::CountCoursByCategory();
 
             </div>
         </div>
+        <!-- Best Course Section -->
+        <div class="container mx-auto px-4 py-6">
+            <div class="bg-white rounded-lg shadow-lg p-6 flex items-center justify-between border-l-4 border-green-500 transition-transform transform hover:scale-105">
+                <!-- Best Course Icon -->
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 rounded-full bg-green-100">
+                        <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <!-- Best Course Info -->
+                    <div>
+                        <p class="text-lg font-semibold text-gray-700 mb-1">Best Course</p>
+                        <p class="text-xl font-bold text-gray-800"><?= $bestCourse['titre'] ?> </p>
+                        <p class="text-md text-gray-600"><?= $bestCourse['etudNbr'] ?> Students Enrolled</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top 3 Teachers Section -->
+        <div class="container mx-auto px-4 py-6">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Top 3 Teachers</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
+                    <?php foreach ($topTeachers as $teacher): ?>
+                        <div class="bg-white rounded-lg shadow-lg p-6 flex items-center justify-between border-l-4 border-purple-500 transition-transform transform hover:scale-105">
+                            <!-- Teacher Icon -->
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-purple-100">
+                                    <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                    </svg>
+                                </div>
+                                <!-- Teacher Name and Enrollment Count -->
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-700 mb-1"><?= $teacher['name'] ?></p>
+                                    <p class="text-xl font-bold text-gray-800"><?= $teacher['enrolle_count'] ?> Enrollments</p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
+            </div>
+        </div>
         <!-- Courses Table Section -->
         <div class="container mx-auto px-4 pb-8">
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
