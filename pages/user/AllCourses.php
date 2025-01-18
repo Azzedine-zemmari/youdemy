@@ -6,7 +6,16 @@ if(isset($_POST['submitSearch'])){
     $courses = course::search($searchCourse);
 }
 else{
-    $courses = course::showCourses();
+    $itemPerPage = 6;
+    // Get the current page
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+    $courses = course::showCourses($page,$itemPerPage);
+
+    // calculate the page number
+    $totalCourse = course::CourseCount();
+    $totalPage = ceil($totalCourse['total']/$itemPerPage);
+
 }
 // print_r( $_SESSION['nom']);
 ?>
@@ -157,21 +166,11 @@ else{
             <!-- Pagination -->
             <div class="flex justify-center pb-20" data-aos="fade-up">
                 <nav class="inline-flex rounded-lg shadow-sm">
-                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-50">
-                        Previous
-                    </button>
-                    <button class="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-green-600">
-                        1
-                    </button>
-                    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50">
-                        2
-                    </button>
-                    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50">
-                        3
-                    </button>
-                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-50">
-                        Next
-                    </button>
+                    <?php for($i = 1;$i<$totalPage;$i++): ?>
+                    <a href="?page=<?= $i?>" class="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-green-600">
+                        <?= $i ?>
+                    </a>
+                    <?php endfor; ?>
                 </nav>
             </div>
         </div>

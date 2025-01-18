@@ -29,21 +29,38 @@ abstract class course
     abstract public function createCourse($tagsArray);
     // work on createCourse and showCourse
 
-    public static function showCourses()
+    public static function showCourses($page = 1,$itemPerPage = 6)
     {
         $db = Database::getInstance()->getConnection();
-        $sql = "select cours.*,categories.nom as CategoryName,user.name as Enseignant , group_concat(tags.nom) as tags from cours 
+        $offset = ($page - 1) * $itemPerPage;
+        $sql = "select cours.*,categories.nom as CategoryName,user.name as Enseignant , 
+        group_concat(tags.nom) as tags from cours 
         join categories on categories.idCategory = cours.categorie_id 
         join user on user.id = cours.enseignant_id 
         join cours_tags on cours.idCours = cours_tags.cours_id
         join tags on tags.idTag = cours_tags.tag_id
-        group by cours.idCours";
+        group by cours.idCours
+        limit :itemPerPage offset :offset
+        ";
         $stmt = $db->prepare($sql);
+        $stmt->bindParam(":itemPerPage",$itemPerPage,PDO::PARAM_INT);
+        $stmt->bindParam(":offset",$offset,PDO::PARAM_INT);
         if ($stmt->execute()) {
             $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $user;
         } else {
             return [];
+        }
+    }
+    public static function CourseCount(){
+        $db = Database::getInstance()->getConnection();
+        $sql = "select count(*) as total from cours";
+        $stmt = $db->prepare($sql);
+        if($stmt->execute()){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        else{
+            return 0;
         }
     }
     public static function search($keyword)
