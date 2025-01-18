@@ -108,6 +108,19 @@ class Admin extends User{
             return false;
         }
     }
+    public static function CountCoursByCategory(){
+        $db = Database::getInstance()->getConnection();
+
+        $sql = "SELECT categories.nom, COUNT(cours.idCours) AS coursNbr 
+                FROM categories
+                LEFT JOIN cours ON categories.idCategory = cours.Categorie_id
+                GROUP BY categories.nom, categories.idCategory;";
+        
+        $stmt = $db->prepare($sql);
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 }
 
 // $test = new Admin("Azzedine","azzedine@gmail.com","azzedine2004");

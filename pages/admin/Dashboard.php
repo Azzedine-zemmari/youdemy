@@ -1,11 +1,10 @@
 <?php
 require_once __DIR__ . "/../../class/Admin.php";
 
-
 $enseiants = Admin::showAllEnseignant();
+$nbrCourseBYCategory = Admin::CountCoursByCategory();
 
 // Calculate statistics
-
 ?>
 
 <!DOCTYPE html>
@@ -22,9 +21,11 @@ $enseiants = Admin::showAllEnseignant();
 </head>
 
 <body class="bg-gray-50">
+
     <div class="min-h-screen">
+
         <!-- Header Section -->
-        <div class="bg-white shadow">
+        <div class="bg-white shadow mb-6">
             <div class="container mx-auto px-4 py-6">
                 <h1 class="text-3xl font-bold text-gray-800">Teacher Dashboard</h1>
                 <p class="text-gray-600 mt-1">Manage your courses and track your progress</p>
@@ -32,37 +33,28 @@ $enseiants = Admin::showAllEnseignant();
         </div>
 
         <!-- Stats Section -->
-        <div class="container mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Total Students Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-blue-100 mr-4">
-                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600 mb-1">Total Enrolled Students</p>
-                            <p class="text-2xl font-bold text-gray-800"></p>
-                        </div>
-                    </div>
-                </div>
+        <div class="container mx-auto px-4 py-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- Total Courses Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-green-100 mr-4">
-                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600 mb-1">Total Courses</p>
-                            <p class="text-2xl font-bold text-gray-800"></p>
+                <!-- Category Cards -->
+                <?php foreach ($nbrCourseBYCategory as $n): ?>
+                    <div class="bg-white rounded-lg shadow-lg p-6 flex items-center justify-between border-l-4 border-blue-500 transition-transform transform hover:scale-105">
+                        <!-- Category Icon -->
+                        <div class="flex items-center space-x-4">
+                            <div class="p-3 rounded-full bg-blue-100">
+                                <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                            </div>
+                            <!-- Category Name and Course Count -->
+                            <div>
+                                <p class="text-lg font-semibold text-gray-700 mb-1"><?= $n['nom'] ?></p>
+                                <p class="text-xl font-bold text-gray-800"><?= $n['coursNbr'] ?> Courses</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
+
             </div>
         </div>
 
@@ -77,9 +69,9 @@ $enseiants = Admin::showAllEnseignant();
                         <thead class="text-xs text-white uppercase bg-green-600">
                             <tr>
                                 <th class="px-6 py-3">ID</th>
-                                <th class="px-6 py-3">name</th>
-                                <th class="px-6 py-3">email</th>
-                                <th class="px-6 py-3">status</th>
+                                <th class="px-6 py-3">Name</th>
+                                <th class="px-6 py-3">Email</th>
+                                <th class="px-6 py-3">Status</th>
                                 <th class="px-6 py-3">Actions</th>
                             </tr>
                         </thead>
@@ -89,17 +81,15 @@ $enseiants = Admin::showAllEnseignant();
                                     <td class="px-6 py-4"><?= $enseiant['id'] ?></td>
                                     <td class="px-6 py-4 font-medium text-gray-900"><?= $enseiant['name'] ?></td>
                                     <td class="px-6 py-4"><?= $enseiant['email'] ?></td>
-                                    <td class="px-6 py-4 truncate max-w-xs"><?= $enseiant['status'] ?></td>
+                                    <td class="px-6 py-4"><?= $enseiant['status'] ?></td>
                                     <td class="px-6 py-4">
                                         <div class="flex space-x-3">
-                                            <a href="./activerEnseignant.php?id=<?= $enseiant['id'] ?>"
-                                                class="text-blue-600 hover:text-blue-900">
-                                                activer
+                                            <a href="./activerEnseignant.php?id=<?= $enseiant['id'] ?>" class="text-blue-600 hover:text-blue-900">
+                                                Activate
                                             </a>
-                                            <a href="./DesactiverEnseignant.php?id=<?= $enseiant['id'] ?>"
-                                                class="text-red-600 hover:text-red-900"
-                                                onclick="return confirm('Are you sure you want to desactive this teacher?');">
-                                                desactiver
+                                            <a href="./DesactiverEnseignant.php?id=<?= $enseiant['id'] ?>" class="text-red-600 hover:text-red-900"
+                                                onclick="return confirm('Are you sure you want to deactivate this teacher?');">
+                                                Deactivate
                                             </a>
                                         </div>
                                     </td>
@@ -110,10 +100,11 @@ $enseiants = Admin::showAllEnseignant();
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#coursesTable').DataTable({
                 "pagingType": "simple_numbers",
                 "pageLength": 10,
