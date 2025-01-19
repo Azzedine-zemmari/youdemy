@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Only start the session if it's not already active
+}
 require_once __DIR__. "/./User.php";
 
 class Enseignant extends User{
@@ -19,7 +21,15 @@ class Enseignant extends User{
                 $_SESSION['userId'] = $user['id'];
                 $_SESSION['userName'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
-                header("Location: /edex-html/pages/enseignant/WaitingPage.php");
+                if($user['status'] == 'active'){
+                    $_SESSION['status'] == 'welcome';
+                    header("Location: /edex-html/pages/enseignant/MyCourses.php");
+                }
+                else{
+                    $_SESSION['status'] == 'wait';
+                    header("Location: /edex-html/pages/enseignant/WaitingPage.php");
+                }
+                exit();
             }
             else{
                 echo "error in the login";

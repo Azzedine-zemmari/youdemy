@@ -41,17 +41,26 @@ class Admin extends User{
     public static function activeEnseignant($userID){
         $db = Database::getInstance()->getConnection();
 
-        $sql = "update user set status = 'active' where id = ?";
-        $stmt = $db->prepare($sql);
+        $CheckStatusQuery = "select status from user where id = ?";
+        $stmtCheckStatus = $db->prepare($CheckStatusQuery);
+        $stmtCheckStatus->execute([$userID]);
+        $user = $stmtCheckStatus->fetch(PDO::FETCH_ASSOC);
+        
+        if($user && $user['status'] == 'active'){
+            $_SESSION['status'] = 'welcome';
+            return true;
+        }
+
+        $UpdateStatusQuery = "update user set status = 'active' where id = ?";
+        $stmt = $db->prepare($UpdateStatusQuery);
 
         if($stmt->execute([$userID])){
             $_SESSION['status'] = 'welcome';
             return true;
         }
         else{
-            return false;
             $_SESSION['status'] = 'wait';
-
+            return false;
         }
     }
 

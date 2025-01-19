@@ -1,9 +1,12 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Only start the session if it's not already active
+}
 if (isset($_SESSION['status']) && $_SESSION['status'] == 'welcome') {
     header("Location: ./MyCourses.php");
     exit();
 }
+// var_dump($_SESSION);
 // print_r($_SESSION);
 ?>
 

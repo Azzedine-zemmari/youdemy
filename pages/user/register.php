@@ -2,16 +2,16 @@
 require_once __DIR__. "/../../class/Etudiant.php";
 require_once __DIR__."/../../class/Enseignant.php";
 if(isset($_POST['submit'])){
-    $FullName = $_POST['full_name'];
-    $email = $_POST['email'];
+    $FullName = htmlspecialchars($_POST['full_name']);
+    $email = filter_var($_POST['email'],FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
     $role = $_POST['role'];
     if($role == 'etudiant'){
         $user = new Etudiant($FullName,$email,$password);
         $user->register();
     }elseif($role == 'enseignant'){
-        $user = new Enseignant($FullName,$email,$password);
-        $user->register();
+        $enseignant = new Enseignant($FullName,$email,$password);
+        $enseignant->register();
     }else{
         echo "invalid role selected";
     }
@@ -44,21 +44,25 @@ if(isset($_POST['submit'])){
     <div class="container px-4 sm:px-6 2xl:px-0 flex items-center justify-center min-h-screen relative z-10">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-primary-900 font-display font-semibold text-3xl mb-6 text-center">Register</h2>
-            <form method="POST">
+            <form method="POST" onsubmit="valideForm(event)">
                 <div class="mb-6">
                     <input type="text" name="full_name" placeholder="Full Name" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300">
+                    <span id="error-full-name" class="error-message text-red-500"><?= isset($errors['full_name']) ? $errors['full_name'] : '' ?></span>
                 </div>
                 <div class="mb-6">
-                    <input type="email" name="email" placeholder="Email Address" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300">
+                    <input type="text" name="email" placeholder="Email Address" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300">
+                    <span id="error-email" class="error-message text-red-500"><?= isset($errors['email']) ? $errors['email'] : '' ?></span>
                 </div>
                 <div class="mb-6">
                     <input type="password" name="password" placeholder="Password" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300">
+                    <span id="error-password" class="error-message text-red-500"><?= isset($errors['password']) ? $errors['password'] : '' ?></span>
                 </div>
                 <div class="mb-6">
                     <select name="role" class="w-full px-6 py-4 rounded border focus:outline-none focus:ring-1 focus:ring-primary-500 transition duration-300">
                         <option value="etudiant">Etudiant</option>
                         <option value="enseignant">Enseignant</option>
                     </select>
+                    <span id="error-role" class="error-message text-red-500"><?= isset($errors['role']) ? $errors['role'] : '' ?></span>
                 </div>
                 <button type="submit" name="submit" class="w-full bg-primary-500 text-white font-display font-semibold py-4 px-6 rounded hover:bg-primary-600 transition duration-300">
                     Register
@@ -74,5 +78,43 @@ if(isset($_POST['submit'])){
         <span class="absolute bg-blue-500 rounded-full opacity-30 w-52 h-52 -top-[80px] -left-[50px]"></span>
     </div>
 </section>
+<script>
+    function valideForm(event){
+        let formValid = true;
+
+        const ErrorMessages = document.querySelectorAll(".error-message");
+        ErrorMessages.forEach(error=>error.textContent = "");
+
+        const fullName = document.querySelector('[name="full_name"]');
+        if(!fullName.value){
+            document.querySelector('#error-full-name').textContent = "full name is required";
+            formValid = false;
+        }
+        const email = document.querySelector('[name = "email"]');
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if(!email.value){
+            document.querySelector('#error-email').textContent = "Email is required.";
+            formValid = false;
+        }
+        else if(!emailPattern.test(email.value)){
+            document.querySelector('#error-email').textContent = "Invalid email format."
+            formValid = false;
+        }
+        const password = document.querySelector('[name = "password"]');
+        if(!password.value){
+            document.querySelector('#error-password').textContent = "Password is required.";
+            formValid = false;
+        }
+        const role = document.querySelector('[name="role"]');
+            if (!role.value) {
+                document.querySelector('#error-role').textContent = "Role is required.";
+                formValid = false;
+            }
+
+        if(!formValid){
+            event.preventDefault();
+        }
+    }
+</script>
 </body>
 </html>

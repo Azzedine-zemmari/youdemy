@@ -1,5 +1,7 @@
 <?php 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Only start the session if it's not already active
+}
 require_once __DIR__."/../../class/Course.php";
 $id = $_GET['id'];
 

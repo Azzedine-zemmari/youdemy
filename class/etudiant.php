@@ -1,6 +1,7 @@
 <?php 
-// session_start();
-require_once __DIR__. "/./User.php";
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Only start the session if it's not already active
+}require_once __DIR__. "/./User.php";
 class Etudiant extends User{
     public function __construct($nom,$email,$password)
     {
@@ -17,7 +18,10 @@ class Etudiant extends User{
                 $_SESSION['userId'] = $user['id'];
                 $_SESSION['nom'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
-                echo "welcome {$user['role']} {$user['name']}";
+                // session_write_close();
+                // var_dump($_SESSION);
+                // header("Location:")
+                // echo "welcome {$user['role']} {$user['name']}";
                 return true;
             }
             else{
@@ -39,7 +43,3 @@ class Etudiant extends User{
     }
 }
 
-// $test = new Etudiant("amine","amine@gmail.com","amine4000");
-// $test->register();
-// $test->login("ilyas@gmail.com","ilyass2000");
-// $test->logout();

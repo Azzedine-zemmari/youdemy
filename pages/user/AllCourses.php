@@ -1,12 +1,14 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Only start the session if it's not already active
+}
 require_once __DIR__ . "/../../class/Course.php";
 if(isset($_POST['submitSearch'])){
     $searchCourse = $_POST['searchInput'];
     $courses = course::search($searchCourse);
 }
 else{
-    $itemPerPage = 6;
+    $itemPerPage = 4;
     // Get the current page
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
 
@@ -15,6 +17,7 @@ else{
     // calculate the page number
     $totalCourse = course::CourseCount();
     $totalPage = ceil($totalCourse['total']/$itemPerPage);
+
 
 }
 // print_r( $_SESSION['nom']);
@@ -32,6 +35,53 @@ else{
 </head>
 
 <body class="bg-gray-50">
+<nav class="bg-white shadow-md">
+    <div class="container mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="#" class="flex items-center space-x-2">
+                    <span class="text-2xl font-bold text-green-600">EduPortal</span>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="../../index" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium transition-colors <?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'text-green-600' : ''; ?>">
+                    Home
+                </a>
+                <a href="" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium transition-colors <?php echo basename($_SERVER['PHP_SELF']) == 'mycourses.php' ? 'text-green-600' : ''; ?>">
+                    Courses
+                </a>
+                <a href="./EnrolledCourses.php" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium transition-colors <?php echo basename($_SERVER['PHP_SELF']) == 'enrolled.php' ? 'text-green-600' : ''; ?>">
+                    Learning
+                </a>
+                <!-- <button onclick="window.location.href='./Userlogout.php'" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+                    Logout
+                </button> -->
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button type="button" class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-green-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500" aria-controls="mobile-menu" aria-expanded="false">
+                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="index.php" class="text-gray-700 hover:text-green-600 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+            <a href="mycourses.php" class="text-gray-700 hover:text-green-600 block px-3 py-2 rounded-md text-base font-medium">My Courses</a>
+            <a href="enrolled.php" class="text-gray-700 hover:text-green-600 block px-3 py-2 rounded-md text-base font-medium ">Learning</a>
+            <a href="./Userlogout.php" class="bg-green-600 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-green-700 transition-colors mt-2">Logout</a>
+        </div>
+    </div>
+</nav>
     <section class="min-h-screen bg-gradient-to-b from-green-50 to-white">
         <div class="container px-4 sm:px-6 2xl:px-0 mx-auto">
             <!-- Hero Section -->
@@ -166,7 +216,7 @@ else{
             <!-- Pagination -->
             <div class="flex justify-center pb-20" data-aos="fade-up">
                 <nav class="inline-flex rounded-lg shadow-sm">
-                    <?php for($i = 1;$i<$totalPage;$i++): ?>
+                    <?php for($i = 1;$i<=$totalPage;$i++): ?>
                     <a href="?page=<?= $i?>" class="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-green-600">
                         <?= $i ?>
                     </a>
@@ -182,6 +232,12 @@ else{
             easing: 'ease-out-cubic',
             once: true
         });
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
     </script>
 </body>
 

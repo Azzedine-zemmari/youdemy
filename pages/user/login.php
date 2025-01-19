@@ -5,7 +5,9 @@ if(isset($_POST['submit'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
     $test = Etudiant::login($email,$password);
-    
+    if($test){
+        header("Location: ./AllCourses.php");
+    }
 }
 
 ?>

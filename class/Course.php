@@ -29,7 +29,7 @@ abstract class course
     abstract public function createCourse($tagsArray);
     // work on createCourse and showCourse
 
-    public static function showCourses($page = 1,$itemPerPage = 6)
+    public static function showCourses($page = 1,$itemPerPage = 4)
     {
         $db = Database::getInstance()->getConnection();
         $offset = ($page - 1) * $itemPerPage;
@@ -40,14 +40,13 @@ abstract class course
         join cours_tags on cours.idCours = cours_tags.cours_id
         join tags on tags.idTag = cours_tags.tag_id
         group by cours.idCours
-        limit :itemPerPage offset :offset
+        limit :limit offset :offset
         ";
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(":itemPerPage",$itemPerPage,PDO::PARAM_INT);
-        $stmt->bindParam(":offset",$offset,PDO::PARAM_INT);
+        $stmt->bindValue(":limit",$itemPerPage,PDO::PARAM_INT);
+        $stmt->bindValue(":offset",$offset,PDO::PARAM_INT);
         if ($stmt->execute()) {
-            $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $user;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return [];
         }
@@ -86,7 +85,7 @@ abstract class course
         ";
         $stmt = $db->prepare($sql);
         $stmt->execute([$id]);
-        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public static function EnrollCourse($userId , $coursId){
         $db =  Database::getInstance()->getConnection();
